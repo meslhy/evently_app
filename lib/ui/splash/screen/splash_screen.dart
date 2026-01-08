@@ -18,14 +18,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState(){
     super.initState();
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(Duration(seconds: 2), () {
       Navigator.pushReplacementNamed(context, StartScreen.routeName);
     });
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorManager.lightBackground,
       body: Center(
         child: Image.asset(AssetsManager.logo).animate()
             .scale(
