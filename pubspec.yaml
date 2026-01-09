@@ -38,6 +38,8 @@ dependencies:
   animated_toggle_switch: ^0.8.5
   flutter_svg: ^2.2.3
   easy_localization: ^3.0.8
+  provider: ^6.1.5+1
+  shared_preferences: ^2.5.4
 
 dev_dependencies:
   flutter_test:

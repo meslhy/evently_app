@@ -3,7 +3,9 @@ import 'package:evently_app1/core/resources/ColorManager.dart';
 import 'package:evently_app1/core/resources/StringManager.dart';
 import 'package:evently_app1/core/reusable_componant/CustomButton.dart';
 import 'package:evently_app1/core/reusable_componant/CustomSwitch.dart';
+import 'package:evently_app1/providers/ThemeProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/resources/AssetsManager.dart';
 
@@ -21,7 +23,6 @@ class _StartScreenState extends State<StartScreen> {
   int selectedLanguage = 0 ;
 
   int selectedTheme = 0;
-
   @override
   void initState() {
     super.initState();
@@ -32,6 +33,8 @@ class _StartScreenState extends State<StartScreen> {
   @override
   Widget build(BuildContext context) {
     selectedLanguage = context.locale.languageCode == 'en' ? 0 : 1;
+    ThemeProvider provider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(AssetsManager.startLogo),
@@ -95,6 +98,12 @@ class _StartScreenState extends State<StartScreen> {
                     item2: AssetsManager.moon,
                     isColored: true, selected: selectedTheme,
                     onChanged: (value) {
+                    if(value == 0)
+                      {
+                        provider.changeTheme(ThemeMode.light);
+                        }else{
+                        provider.changeTheme(ThemeMode.dark);
+                      }
                       setState(() {
                         selectedTheme = value;
 
