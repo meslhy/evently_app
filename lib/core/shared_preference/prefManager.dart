@@ -1,14 +1,18 @@
+import 'package:flutter/material.dart' show ThemeMode;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefManager {
 
   static late SharedPreferences prefs;
-  static Future<void> init() async {
+  static init()  async {
     prefs = await SharedPreferences.getInstance();
   }
 
-  static Future<bool> setString(String key, String value) async {
-    return await prefs.setString(key, value);
+  static  saveThemeMode(bool isDarkMode) async {
+    return prefs.setBool('isDarkMode', isDarkMode);
+  }
 
+  static getThemeMode() async {
+    return prefs.getBool('isDarkMode') ?? false;
   }
 }

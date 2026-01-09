@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/resources/AssetsManager.dart';
+import '../../../core/shared_preference/prefManager.dart';
 
 class StartScreen extends StatefulWidget {
   static const String routeName = "StartScreen";
@@ -27,14 +28,13 @@ class _StartScreenState extends State<StartScreen> {
   void initState() {
     super.initState();
     // WidgetsBinding.instance.addPostFrameCallback((_) async{
-    //
     // });
   }
   @override
   Widget build(BuildContext context) {
     selectedLanguage = context.locale.languageCode == 'en' ? 0 : 1;
     ThemeProvider provider = Provider.of<ThemeProvider>(context);
-
+    selectedTheme = provider.themeMode == ThemeMode.light ? 0 : 1;
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(AssetsManager.startLogo),
@@ -101,8 +101,10 @@ class _StartScreenState extends State<StartScreen> {
                     if(value == 0)
                       {
                         provider.changeTheme(ThemeMode.light);
+                        PrefManager.saveThemeMode(false);
                         }else{
                         provider.changeTheme(ThemeMode.dark);
+                        PrefManager.saveThemeMode(true);
                       }
                       setState(() {
                         selectedTheme = value;

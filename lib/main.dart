@@ -6,9 +6,12 @@ import 'package:evently_app1/ui/start/screen/start_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'core/shared_preference/prefManager.dart';
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  await PrefManager.init();
   runApp(
       EasyLocalization(
       supportedLocales: [
@@ -18,7 +21,7 @@ void main() async{
           path: "assets/translations",
           fallbackLocale: Locale('en'),
       child: ChangeNotifierProvider(
-          create: (BuildContext context) => ThemeProvider(),
+          create: (BuildContext context) => ThemeProvider()..init(),
           child: MyApp()
       )
       )
