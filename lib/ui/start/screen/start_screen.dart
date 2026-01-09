@@ -4,6 +4,8 @@ import 'package:evently_app1/core/resources/StringManager.dart';
 import 'package:evently_app1/core/reusable_componant/CustomButton.dart';
 import 'package:evently_app1/core/reusable_componant/CustomSwitch.dart';
 import 'package:evently_app1/providers/ThemeProvider.dart';
+import 'package:evently_app1/ui/auth/login/screen/login_screen.dart';
+import 'package:evently_app1/ui/auth/register/screen/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -116,7 +118,9 @@ class _StartScreenState extends State<StartScreen> {
               const SizedBox(height: 28,),
               CustomButton(
                   title: StringManager.begin.tr(),
-                  onTap: (){})
+                  onTap: (){
+                    Navigator.pushReplacementNamed(context,LoginScreen.routeName);
+                  })
             ],
           ),
         ),

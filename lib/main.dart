@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:evently_app1/core/resources/AppStyle.dart';
 import 'package:evently_app1/providers/ThemeProvider.dart';
+import 'package:evently_app1/ui/auth/forgetPass/screen/forget_pass_screen.dart';
+import 'package:evently_app1/ui/auth/login/screen/login_screen.dart';
+import 'package:evently_app1/ui/auth/register/screen/register_screen.dart';
 import 'package:evently_app1/ui/splash/screen/splash_screen.dart';
 import 'package:evently_app1/ui/start/screen/start_screen.dart';
 import 'package:flutter/material.dart';
@@ -43,8 +46,11 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       routes: {
-        SplashScreen.routeName: (_) => SplashScreen(),
-        StartScreen.routeName: (_) => StartScreen()
+        RegisterScreen.routeName: (context) => RegisterScreen(),
+        StartScreen.routeName: (context) => StartScreen(),
+        LoginScreen.routeName: (context) => LoginScreen(),
+        SplashScreen.routeName: (context) => SplashScreen(),
+        ForgetPassScreen.routeName: (context) => ForgetPassScreen(),
       },
       initialRoute: SplashScreen.routeName,
     );

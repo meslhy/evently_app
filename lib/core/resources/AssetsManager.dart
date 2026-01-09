@@ -11,4 +11,5 @@ abstract class AssetsManager{
   static const String us = "assets/images/EN.svg";
   static const String sun = "assets/images/Sun.svg";
   static const String moon = "assets/images/Moon.svg";
+  static const String forgetPic = "assets/images/forgetPic.svg";
 }

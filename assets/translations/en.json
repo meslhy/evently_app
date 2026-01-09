@@ -2,4 +2,18 @@
   "StartDesc" : "Choose your preferred theme and language to get started with a comfortable, tailored experience that suits your style.",
   "Language" : "Language",
   "Theme" : "Theme",
-  "Begin" : "Let’s Start"}
+  "Begin" : "Let’s Start",
+  "Register" : "Register",
+  "name" : "Name",
+  "Email" :"Email",
+  "Password":"Password" ,
+  "RePassword": "Re Password",
+  "CreateAccount" : "Create Account",
+  "HaveAcc" : "Already Have Account ?",
+  "Login" : "Login",
+  "DontHaveAcc" : "Don’t Have Account ?",
+  "CreateAcc" : "Create Account",
+  "ForgetPassword" : "Forget Password?",
+  "ResetPassword" : "Reset Password"
+
+}

@@ -12,6 +12,11 @@ class AppStyle {
       backgroundColor: Colors.transparent,
       centerTitle:true,
       elevation: 0,
+      titleTextStyle: TextStyle(
+        color: ColorManager.blue,
+        fontSize: 22,
+        fontWeight: FontWeight.w400,
+      ),
     ),
     colorScheme: ColorScheme.fromSeed(
         seedColor: Colors.deepPurple,
@@ -20,6 +25,7 @@ class AppStyle {
       tertiary: ColorManager.red,
       brightness: Brightness.light,
       onPrimary: Colors.white,
+      onPrimaryContainer: Colors.grey,
 
     ),
     textTheme: TextTheme(
@@ -48,6 +54,11 @@ class AppStyle {
       backgroundColor: Colors.transparent,
       centerTitle:true,
       elevation: 0,
+      titleTextStyle: TextStyle(
+        color: ColorManager.blue,
+        fontSize: 22,
+        fontWeight: FontWeight.w400,
+      ),
     ),
     colorScheme: ColorScheme.fromSeed(
       seedColor: Colors.deepPurple,
@@ -56,6 +67,7 @@ class AppStyle {
       tertiary: ColorManager.red,
         brightness: Brightness.dark,
       onPrimary: Colors.black,
+      onPrimaryContainer: ColorManager.white,
     ),
     textTheme: TextTheme(
       bodySmall:  TextStyle(
