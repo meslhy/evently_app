@@ -6,15 +6,20 @@ import 'package:evently_app1/ui/auth/login/screen/login_screen.dart';
 import 'package:evently_app1/ui/auth/register/screen/register_screen.dart';
 import 'package:evently_app1/ui/splash/screen/splash_screen.dart';
 import 'package:evently_app1/ui/start/screen/start_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'core/shared_preference/prefManager.dart';
+import 'firebase_options.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await PrefManager.init();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
       EasyLocalization(
       supportedLocales: [

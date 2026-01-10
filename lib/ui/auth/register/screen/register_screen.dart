@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:evently_app1/core/reusable_componant/CustomButton.dart';
 import 'package:evently_app1/core/reusable_componant/CustomTextFF.dart';
 import 'package:evently_app1/ui/auth/login/screen/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/resources/AssetsManager.dart';
@@ -129,7 +130,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: CustomButton(
                     title: StringManager.createAccount.tr(),
                     onTap: (){
-                      formKey.currentState!.validate();
+                      if(formKey.currentState!.validate()){
+                        signup(emailController , passwordController);
+                        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+                        print("ffffffffffffffffffffffffffffffffffffffffffffffffff");
+                      }
                     },
                 ),
               ),
@@ -175,4 +180,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
+}
+
+
+signup(emailController , passwordController )async{
+  try{
+    UserCredential credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text
+    );
+
+    print("ffffffffffffffffffffffffffffffffffffffffffffffffff");
+  }catch(e){
+    print(e);
+  }
+
+
 }
