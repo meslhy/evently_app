@@ -14,5 +14,6 @@
   "DontHaveAcc" : "لا املك حساب ؟",
   "CreateAcc" : "انشاء حساب",
   "ForgetPassword": "نسيت كلمة المرور؟",
-  "ResetPassword" : "اعادة تعيين كلمة السر"
+  "ResetPassword" : "اعادة تعيين كلمة السر",
+  "WelcomeBack" :"اهلا بالعوده✨"
 }

@@ -1,16 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:evently_app1/core/resources/AppStyle.dart';
 import 'package:evently_app1/providers/ThemeProvider.dart';
+import 'package:evently_app1/providers/UserProvider.dart';
 import 'package:evently_app1/ui/auth/forgetPass/screen/forget_pass_screen.dart';
 import 'package:evently_app1/ui/auth/login/screen/login_screen.dart';
 import 'package:evently_app1/ui/auth/register/screen/register_screen.dart';
+import 'package:evently_app1/ui/home/screen/home_screen.dart';
 import 'package:evently_app1/ui/splash/screen/splash_screen.dart';
 import 'package:evently_app1/ui/start/screen/start_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'core/shared_preference/prefManager.dart';
+import 'core/prefManager.dart';
 import 'firebase_options.dart';
 
 void main() async{
@@ -28,8 +31,11 @@ void main() async{
       ],
           path: "assets/translations",
           fallbackLocale: Locale('en'),
-      child: ChangeNotifierProvider(
-          create: (BuildContext context) => ThemeProvider()..init(),
+      child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (BuildContext context) => ThemeProvider()..init()),
+            ChangeNotifierProvider(create: (BuildContext context) => UserProvider()),
+          ],
           child: MyApp()
       )
       )
@@ -56,6 +62,7 @@ class MyApp extends StatelessWidget {
         LoginScreen.routeName: (context) => LoginScreen(),
         SplashScreen.routeName: (context) => SplashScreen(),
         ForgetPassScreen.routeName: (context) => ForgetPassScreen(),
+        HomeScreen.routeName: (context) => HomeScreen(),
       },
       initialRoute: SplashScreen.routeName,
     );

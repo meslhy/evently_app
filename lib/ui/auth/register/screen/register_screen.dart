@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:evently_app1/core/FirestoreHandler.dart';
 import 'package:evently_app1/core/reusable_componant/CustomButton.dart';
 import 'package:evently_app1/core/reusable_componant/CustomTextFF.dart';
 import 'package:evently_app1/ui/auth/login/screen/login_screen.dart';
@@ -9,6 +10,7 @@ import '../../../../core/resources/AssetsManager.dart';
 import '../../../../core/resources/StringManager.dart';
 import '../../../../core/reusable_componant/CustomSwitch.dart';
 import '../../../../core/reusable_componant/CustomTextButton.dart';
+import '../../../../model/user/user_model.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = "RegisterScreen";
@@ -131,8 +133,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     title: StringManager.createAccount.tr(),
                     onTap: (){
                       if(formKey.currentState!.validate()){
-                        signup(emailController , passwordController);
-                        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+                        signup(emailController , passwordController , nameController).then((value) {
+                          Navigator.pushNamedAndRemoveUntil(context, LoginScreen.routeName, (route) => false);
+                        });
+
                         print("ffffffffffffffffffffffffffffffffffffffffffffffffff");
                       }
                     },
@@ -148,7 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   CustomTextButton(
                     onPressed: (){
-                      Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+                      Navigator.pop(context);
                     },
                     title: StringManager.login.tr(),
                   )
@@ -183,16 +187,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
 }
 
 
-signup(emailController , passwordController )async{
+signup(emailController , passwordController , nameController )async{
   try{
     UserCredential credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text
     );
+    FirestoreHandler().addUser(UserModel(
+        id: credential.user!.uid,
+        name: nameController.text,
+        email: emailController.text
+    )
+    );
 
-    print("ffffffffffffffffffffffffffffffffffffffffffffffffff");
   }catch(e){
-    print(e);
+    print(" error is :   ${e.toString()}");
   }
 
 

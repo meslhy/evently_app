@@ -19,6 +19,8 @@ abstract class StringManager{
   static const String createAcc= "CreateAcc";
   static const String forgetPass = "ForgetPassword";
   static const String resetPass = "ResetPassword";
+  static const String welcomeBack = "WelcomeBack";
+
 
 
 }

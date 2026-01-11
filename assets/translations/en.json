@@ -14,6 +14,7 @@
   "DontHaveAcc" : "Don’t Have Account ?",
   "CreateAcc" : "Create Account",
   "ForgetPassword" : "Forget Password?",
-  "ResetPassword" : "Reset Password"
+  "ResetPassword" : "Reset Password",
+  "WelcomeBack" : "Welcome Back ✨"
 
 }

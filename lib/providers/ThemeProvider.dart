@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../core/shared_preference/prefManager.dart';
+import '../core/prefManager.dart';
 
 
 

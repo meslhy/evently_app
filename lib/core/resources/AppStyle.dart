@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'ColorManager.dart';
 
@@ -9,11 +10,11 @@ class AppStyle {
   static ThemeData lightTheme =  ThemeData(
     scaffoldBackgroundColor: ColorManager.lightBackground,
     appBarTheme: AppBarTheme(
-      backgroundColor: Colors.transparent,
+      backgroundColor: ColorManager.blue,
       centerTitle:true,
       elevation: 0,
       titleTextStyle: TextStyle(
-        color: ColorManager.blue,
+        color: Colors.white,
         fontSize: 22,
         fontWeight: FontWeight.w400,
       ),
@@ -43,7 +44,17 @@ class AppStyle {
         color: Colors.white,
         fontSize: 20,
         fontWeight: FontWeight.w500,
-      )
+      ),
+      titleLarge:  TextStyle(
+          color: ColorManager.white,
+          fontSize: 24,
+          fontWeight: FontWeight.w700
+      ),
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: ColorManager.blue,
+      selectedItemColor: ColorManager.white,
+      unselectedItemColor: Colors.grey,
     ),
     useMaterial3: true,
   );

@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/resources/AssetsManager.dart';
-import '../../../core/shared_preference/prefManager.dart';
+import '../../../core/prefManager.dart';
 
 class StartScreen extends StatefulWidget {
   static const String routeName = "StartScreen";
