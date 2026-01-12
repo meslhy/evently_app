@@ -97,6 +97,12 @@ class AppStyle {
           fontWeight: FontWeight.w500,
         )
     ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      elevation: 2,
+      backgroundColor: ColorManager.darkBackground,
+      selectedItemColor: ColorManager.white,
+      unselectedItemColor: Colors.grey,
+    ),
     useMaterial3: true,
   );
 

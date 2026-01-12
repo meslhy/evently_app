@@ -71,7 +71,8 @@ class _StartScreenState extends State<StartScreen> {
                   Text(StringManager.language.tr(),style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w500
                   ),),
-                  CustomSwitch(item1: AssetsManager.us,
+                  CustomSwitch(
+                    item1: AssetsManager.us,
                     item2: AssetsManager.eg,
                     selected: selectedLanguage,
                     onChanged: (value) {

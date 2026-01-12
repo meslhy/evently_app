@@ -3,6 +3,7 @@ import 'package:evently_app1/core/resources/ColorManager.dart';
 import 'package:evently_app1/core/resources/StringManager.dart';
 import 'package:evently_app1/providers/ThemeProvider.dart';
 import 'package:evently_app1/providers/UserProvider.dart';
+import 'package:evently_app1/ui/create_event/screen/create_event_screen.dart';
 import 'package:evently_app1/ui/home/tabs/HomeTab/screen/home_tab_screen.dart';
 import 'package:evently_app1/ui/home/tabs/MapsTab/screen/maps_tab_screen.dart';
 import 'package:evently_app1/ui/start/screen/start_screen.dart';
@@ -10,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../tabs/LoveTab/screen/love_tab_screen.dart';
@@ -44,37 +46,15 @@ class _HomeScreenState extends State<HomeScreen> {
     UserProvider provider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-            StringManager.welcomeBack.tr(),
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(color:Colors.white ),
-              ),
-              Text(
-                  provider.myUser?.name??"",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            ],
-          ),
+        toolbarHeight: 0,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: themeProvider.themeMode == ThemeMode.dark ? ColorManager.darkBackground : ColorManager.blue,
+          statusBarIconBrightness: themeProvider.themeMode == ThemeMode.dark ? Brightness.light : Brightness.dark,
+
+
         ),
-        actions: [
-          IconButton(
-              onPressed: ()async{
-                await FirebaseAuth.instance.signOut();
-                Navigator.pushNamedAndRemoveUntil(context,StartScreen.routeName, (route) => false);
-              },
-              icon:Icon(Icons.logout) ,
-          )
-        ],
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
-        backgroundColor:themeProvider.themeMode == ThemeMode.dark ? ColorManager.darkBackground: ColorManager.blue,
-        toolbarHeight: MediaQuery.of(context).size.height * 0.15,
       ),
       body:screens[isSelected],
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: isSelected,
         onTap: (index){
@@ -109,12 +89,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
-        child: Icon(Icons.add , color: ColorManager.white,size: 35,),
+        onPressed: (){
+          Navigator.pushNamed(context, CreateEventScreen.routeName);
+        },
         backgroundColor:themeProvider.themeMode == ThemeMode.dark ? ColorManager.darkBackground : ColorManager.blue,
         shape:RoundedRectangleBorder(
           side: BorderSide(width: 3, color: Colors.white),
         borderRadius: BorderRadius.circular(50)),
+        child: Icon(Icons.add , color: ColorManager.white,size: 35,),
 
 
       ),

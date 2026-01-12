@@ -20,7 +20,7 @@ class EventItem extends StatelessWidget {
         color: Colors.grey,
         borderRadius: BorderRadius.circular(20),
         image: DecorationImage(
-          image: AssetImage("assets/images/eventsBG/BookClub.png"),
+          image: AssetImage("assets/images/eventsBG/BookClubImage.png"),
           fit: BoxFit.fill,
         ),
           border: Border.all(
@@ -85,7 +85,7 @@ class EventItem extends StatelessWidget {
                   child: Text(
                     "playing football with friends!!",
                     style: TextStyle(
-                      color: ColorManager.white,
+                      color: provider.themeMode == ThemeMode.dark ? ColorManager.white : ColorManager.black,
                       fontSize: 14,
                       fontWeight: FontWeight.w700
                     )
@@ -94,7 +94,7 @@ class EventItem extends StatelessWidget {
                 ),
                 Expanded(
                   child: Align(
-                      child: Icon(CupertinoIcons.heart),
+                      child: Icon(CupertinoIcons.heart , color: ColorManager.blue, size: 25,),
                     alignment: AlignmentDirectional.centerEnd,
                   ),
                   flex: 20,

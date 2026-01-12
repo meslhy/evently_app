@@ -5,6 +5,7 @@ import 'package:evently_app1/providers/UserProvider.dart';
 import 'package:evently_app1/ui/auth/forgetPass/screen/forget_pass_screen.dart';
 import 'package:evently_app1/ui/auth/login/screen/login_screen.dart';
 import 'package:evently_app1/ui/auth/register/screen/register_screen.dart';
+import 'package:evently_app1/ui/create_event/screen/create_event_screen.dart';
 import 'package:evently_app1/ui/home/screen/home_screen.dart';
 import 'package:evently_app1/ui/splash/screen/splash_screen.dart';
 import 'package:evently_app1/ui/start/screen/start_screen.dart';
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
         SplashScreen.routeName: (context) => SplashScreen(),
         ForgetPassScreen.routeName: (context) => ForgetPassScreen(),
         HomeScreen.routeName: (context) => HomeScreen(),
+        CreateEventScreen.routeName: (context) => CreateEventScreen(),
       },
       initialRoute: SplashScreen.routeName,
     );
