@@ -1,17 +1,29 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:evently_app1/core/resources/AppStyle.dart';
 import 'package:evently_app1/core/resources/ColorManager.dart';
+import 'package:evently_app1/model/event/event_model.dart';
 import 'package:evently_app1/providers/ThemeProvider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/resources/Constants.dart';
+
 class EventItem extends StatelessWidget {
-  const EventItem({super.key});
+
+  EventModel eventModel;
+
+   EventItem({
+     super.key,
+     required this.eventModel
+   });
 
   @override
   Widget build(BuildContext context) {
     ThemeProvider provider = Provider.of<ThemeProvider>(context);
+    String type = eventModel.type!;
 
     return Container(
       margin: EdgeInsets.all(12),
@@ -20,7 +32,11 @@ class EventItem extends StatelessWidget {
         color: Colors.grey,
         borderRadius: BorderRadius.circular(20),
         image: DecorationImage(
-          image: AssetImage("assets/images/eventsBG/BookClubImage.png"),
+          image: AssetImage(
+              provider.themeMode == ThemeMode.light ?
+          bgEventsLight[type]??"":
+              bgEventsDark[type]??""
+          ),
           fit: BoxFit.fill,
         ),
           border: Border.all(
@@ -50,7 +66,7 @@ class EventItem extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    "21",
+                    DateFormat.d(context.locale.languageCode == 'ar' ? 'ar' : 'en').format(eventModel.date!.toDate()),
                     style: TextStyle(
                       color: ColorManager.blue,
                       fontSize: 18
@@ -59,7 +75,7 @@ class EventItem extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    "Nov",
+                      DateFormat.MMM(context.locale.languageCode == 'ar' ? 'ar' : 'en').format(eventModel.date!.toDate()),
                     style: TextStyle(
                       color: ColorManager.blue,
                       fontSize: 14
@@ -82,15 +98,15 @@ class EventItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
+                  flex: 80,
                   child: Text(
-                    "playing football with friends!!",
+                    eventModel.description??"",
                     style: TextStyle(
                       color: provider.themeMode == ThemeMode.dark ? ColorManager.white : ColorManager.black,
                       fontSize: 14,
                       fontWeight: FontWeight.w700
                     )
                   ),
-                  flex: 80,
                 ),
                 Expanded(
                   child: Align(
