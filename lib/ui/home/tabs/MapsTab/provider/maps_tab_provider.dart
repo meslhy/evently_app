@@ -1,13 +1,21 @@
 import 'package:flutter/cupertino.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 class MapsTabProvider extends ChangeNotifier {
   Location location = Location();
-  String locationMessage = "";
 
-  MapsTabProvider(){
-    getLocation();
-  }
+  late GoogleMapController googleMapController;
+  CameraPosition cameraPosition = const CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
+  Set<Marker> markers = {};
+
+  // MapsTabProvider(){
+  //   getLocation();
+  //   selectLocationListener();
+  // }
 
 
   Future<bool> _getLocationPermission()async{
@@ -34,21 +42,47 @@ class MapsTabProvider extends ChangeNotifier {
   Future<void> getLocation()async {
     bool permissionGranted = await _getLocationPermission();
     if(!permissionGranted){
-      locationMessage = "Location Permission Denied";
       notifyListeners();
     }
 
     bool serviceEnabled = await _checkLocationService();
     if(!serviceEnabled){
-      locationMessage = "Location Service Disabled";
       notifyListeners();
     }
-    locationMessage = "Location Service Enabled and we are now getting your location";
     notifyListeners();
 
     LocationData locationData = await location.getLocation();
-    locationMessage = "Latitude: ${locationData.latitude}, Longitude: ${locationData.longitude}";
+
+    changeLocationOnMap(locationData);
+
     notifyListeners();
+
+  }
+
+  void changeLocationOnMap(LocationData locationData){
+    cameraPosition =  CameraPosition(
+      target: LatLng(locationData.latitude??0,locationData.longitude?? 0),
+      zoom: 14.4746,
+    );
+
+    markers.add(Marker(
+      markerId: MarkerId("1"),
+      position: LatLng(locationData.latitude??37.42796133580664,locationData.longitude?? -122.085749655962),
+      infoWindow: InfoWindow(
+        title: "Current Location",
+      ),
+    ));
+
+    googleMapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    notifyListeners();
+
+  }
+
+  void selectLocationListener() {
+    location.onLocationChanged.listen((newLocation) {
+      changeLocationOnMap(newLocation);
+      notifyListeners();
+    });
 
   }
 }

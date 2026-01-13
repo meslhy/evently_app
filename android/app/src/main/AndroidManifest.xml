@@ -9,6 +9,8 @@
         android:label="evently_app1"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBAIm5MU2dQi0i_fwpRu2jLMYrW_tpJH9E"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
