@@ -8,6 +8,9 @@ import 'package:evently_app1/core/reusable_componant/CustomTextButton.dart';
 import 'package:evently_app1/core/reusable_componant/CustomTextFF.dart';
 import 'package:evently_app1/model/event/event_model.dart';
 import 'package:evently_app1/providers/ThemeProvider.dart';
+import 'package:evently_app1/ui/create_event/provider/create_event_provider.dart';
+import 'package:evently_app1/ui/create_event/screen/pick_location_screen.dart';
+import 'package:evently_app1/ui/create_event/widgets/ChoseLocationButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,20 +28,17 @@ class CreateEventScreen extends StatefulWidget {
   State<CreateEventScreen> createState() => _CreateEventScreenState();
 }
 
-class _CreateEventScreenState extends State<CreateEventScreen> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  DateTime? selectedDate;
-  TimeOfDay? selectedTime;
+class _CreateEventScreenState extends State<CreateEventScreen> with SingleTickerProviderStateMixin
+{
 
+  late TabController tabController;
 
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-    _tabController.addListener(() {
+    tabController = TabController(length: 3, vsync: this);
+    tabController.addListener(() {
       setState(() {});
     });
 
@@ -46,6 +46,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> with SingleTicker
   @override
   Widget build(BuildContext context) {
     ThemeProvider provider= Provider.of<ThemeProvider>(context);
+    CreateEventProvider createEventProvider = Provider.of<CreateEventProvider>(context);
+
     return Scaffold(
 
       appBar: AppBar(
@@ -64,7 +66,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> with SingleTicker
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.22,
                   child: TabBarView(
-                    controller: _tabController,
+                    controller:tabController,
                     children: [
                       Container(
                         height: MediaQuery.of(context).size.height * 0.22,
@@ -112,7 +114,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> with SingleTicker
                   ),
                 ),
                 TabBar(
-                  controller: _tabController,
+                  controller:tabController,
                   indicatorSize: TabBarIndicatorSize.label,
                   isScrollable: true,
                   dividerHeight:0,
@@ -143,7 +145,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> with SingleTicker
                             child: Row(
                               children: [
                                 SvgPicture.asset("assets/images/SportIcon.svg" ,
-                                  color:_tabController.index == 0 ?Colors.white : ColorManager.blue,
+                                  color:tabController.index == 0 ?Colors.white : ColorManager.blue,
                                 ),
                                 SizedBox(width: 5),
                                 Text(
@@ -167,7 +169,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> with SingleTicker
                             child: Row(
                               children: [
                                 SvgPicture.asset("assets/images/BDIcon.svg" ,
-                                  color:_tabController.index == 1 ?Colors.white : ColorManager.blue,
+                                  color:tabController.index == 1 ?Colors.white : ColorManager.blue,
                                 ),
                                 SizedBox(width: 5),
                                 Text(
@@ -191,7 +193,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> with SingleTicker
                             child: Row(
                               children: [
                                 SvgPicture.asset("assets/images/BookIcon.svg" ,
-                                  color:_tabController.index ==2 ?Colors.white : ColorManager.blue ,
+                                  color:tabController.index ==2 ?Colors.white : ColorManager.blue ,
                                 ),
                                 SizedBox(width: 5),
                                 Text(
@@ -214,7 +216,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> with SingleTicker
                   hint: "",
                   label: 'Event Title',
                   prefixIcon:Icon(CupertinoIcons.text_justify),
-                  controller: titleController,
+                  controller: createEventProvider.titleController,
                   keyboardType: TextInputType.text,
                   validator: (value){},
                 ),
@@ -227,7 +229,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> with SingleTicker
                 CustomTextFormField(
                   label: "",
                   hint: 'Event Description',
-                  controller:descriptionController ,
+                  controller:createEventProvider.descriptionController ,
                   keyboardType: TextInputType.multiline,
                   validator: (value){},
                 ),
@@ -247,17 +249,17 @@ class _CreateEventScreenState extends State<CreateEventScreen> with SingleTicker
                               context: context,
                               firstDate: DateTime.now(),
                               lastDate: DateTime(2100),
-                              initialDate: selectedDate,
+                              initialDate: createEventProvider.selectedDate,
                          );
                          if(date != null)
                            {
                              setState(() {
-                               selectedDate = date;
+                               createEventProvider.selectedDate = date;
                              });
                            }
                         },
-                        title: selectedDate != null ?
-                        DateFormat.yMd( context.locale.languageCode == 'ar' ? 'ar' : 'en').format(selectedDate!):
+                        title: createEventProvider.selectedDate != null ?
+                        DateFormat.yMd( context.locale.languageCode == 'ar' ? 'ar' : 'en').format(createEventProvider.selectedDate!):
                         "Select Date"
                     )
                   ],
@@ -281,17 +283,28 @@ class _CreateEventScreenState extends State<CreateEventScreen> with SingleTicker
                           if(time != null)
                             {
                               setState(() {
-                                selectedTime = time;
+                                createEventProvider.selectedTime = time;
                               });
                             }
                         },
-                        title: selectedTime != null ?
-                            "${selectedTime!.hour}:${selectedTime!.minute}" :
+                        title: createEventProvider.selectedTime != null ?
+                            "${createEventProvider.selectedTime!.hour}:${createEventProvider.selectedTime!.minute}" :
                         "Select Time"
                     )
                   ],
                 ),
                 const SizedBox(height: 16,),
+                Text(
+                  "Location",
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                ),
+                const SizedBox(height: 16,),
+                InkWell(
+                  onTap: (){
+                    Navigator.pushNamed(context, PickLocationScreen.routeName , arguments: createEventProvider);
+                  },
+                    child: ChoseLocationButton( createEventProvider: createEventProvider,),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: SizedBox(
@@ -299,40 +312,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> with SingleTicker
                     child: CustomButton(
                         title: "Create Event",
                         onTap: ()async{
-                          if(selectedDate == null) {
-                            dilogUtils().showToast("Chose Event Date");
-                          }else if(selectedTime == null){
-                            dilogUtils().showToast("Chose Event Time");
-                          }
-                          else {
-                            DateTime eventDate = DateTime(
-                              selectedDate!.year,
-                              selectedDate!.month,
-                              selectedDate!.day,
-                              selectedTime!.hour,
-                              selectedTime!.minute,
-                            );
-                            dilogUtils().showLoadingDialog(context);
-                            try {
-                              await FirestoreHandler().addEvent(EventModel(
-                                title: titleController.text,
-                                description: descriptionController.text,
-                                type: eventType[_tabController.index],
-                                date: Timestamp.fromDate(eventDate),
-                                latitude: 30.0444,
-                                longitude: 31.2357,
-                                favoriteUsersId: [],
-                                userId: FirebaseAuth.instance.currentUser!.uid,
-                              ));
-                              Navigator.pop(context);
-                              dilogUtils().showToast(
-                                  "Event Created Successfully");
-                            }catch(e){
-                              Navigator.pop(context);
-                              dilogUtils().showToast(e.toString());
-
-                            }
-                          }
+                           createEventProvider.createEvent(context , tabController);
                         },
                     ),
                   ),

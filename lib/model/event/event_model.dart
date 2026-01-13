@@ -7,8 +7,8 @@ class EventModel {
   String? description;
   String? type;
   Timestamp? date;
-  double? latitude;
-  double? longitude;
+  double latitude = 0.0;
+  double longitude = 0.0;
   List<String>? favoriteUsersId;
 
   EventModel({
@@ -17,17 +17,21 @@ class EventModel {
     this.description,
     this.type,
     this.date,
-    this.latitude,
-    this.longitude,
+    this.latitude =0.0,
+    this.longitude = 0.0,
     this.userId,
     this.favoriteUsersId,
   });
 
   factory EventModel.skeleton() {
     return EventModel(
-      title: '',
-      type: '',
+      title: 'Loading',
+      description: 'Loading',
+      type: 'Loading',
       date: Timestamp.now(),
+      latitude: 0,
+      longitude: 0,
+      favoriteUsersId: const [],
     );
   }
 
@@ -38,8 +42,8 @@ class EventModel {
     description = json?['description'];
     type = json?['type'];
     date = json?['date'];
-    latitude = json?['latitude'];
-    longitude = json?['longitude'];
+    latitude = (json?['latitude']?? 0.0).toDouble() ;
+    longitude = (json?['longitude'] ?? 0.0).toDouble() ;
     favoriteUsersId = json?['favoriteUsersId'] == null ? [] : List<String>.from(json?['favoriteUsersId']);
   }
 

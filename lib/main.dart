@@ -5,7 +5,9 @@ import 'package:evently_app1/providers/UserProvider.dart';
 import 'package:evently_app1/ui/auth/forgetPass/screen/forget_pass_screen.dart';
 import 'package:evently_app1/ui/auth/login/screen/login_screen.dart';
 import 'package:evently_app1/ui/auth/register/screen/register_screen.dart';
+import 'package:evently_app1/ui/create_event/provider/create_event_provider.dart';
 import 'package:evently_app1/ui/create_event/screen/create_event_screen.dart';
+import 'package:evently_app1/ui/create_event/screen/pick_location_screen.dart';
 import 'package:evently_app1/ui/event_details/screen/event_details_screen.dart';
 import 'package:evently_app1/ui/home/screen/home_screen.dart';
 import 'package:evently_app1/ui/home/tabs/MapsTab/provider/maps_tab_provider.dart';
@@ -69,9 +71,16 @@ class MyApp extends StatelessWidget {
           create: (context) => MapsTabProvider(),
           builder: (context,_) => HomeScreen(),
         ),
-        CreateEventScreen.routeName: (context) => CreateEventScreen(),
+        CreateEventScreen.routeName: (context) => ChangeNotifierProvider(
+            create: (context) => CreateEventProvider(),
+            builder: (context,_) => CreateEventScreen(),
+        ),
         EventDetailsScreen.routeName: (context) => EventDetailsScreen(),
-      },
+        PickLocationScreen.routeName: (context) {
+          CreateEventProvider provider = ModalRoute.of(context)?.settings.arguments as CreateEventProvider;
+          return PickLocationScreen(provider:provider );
+        }
+        },
       initialRoute: SplashScreen.routeName,
     );
   }
