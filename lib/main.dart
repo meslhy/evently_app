@@ -6,7 +6,9 @@ import 'package:evently_app1/ui/auth/forgetPass/screen/forget_pass_screen.dart';
 import 'package:evently_app1/ui/auth/login/screen/login_screen.dart';
 import 'package:evently_app1/ui/auth/register/screen/register_screen.dart';
 import 'package:evently_app1/ui/create_event/screen/create_event_screen.dart';
+import 'package:evently_app1/ui/event_details/screen/event_details_screen.dart';
 import 'package:evently_app1/ui/home/screen/home_screen.dart';
+import 'package:evently_app1/ui/home/tabs/MapsTab/provider/maps_tab_provider.dart';
 import 'package:evently_app1/ui/splash/screen/splash_screen.dart';
 import 'package:evently_app1/ui/start/screen/start_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -63,8 +65,12 @@ class MyApp extends StatelessWidget {
         LoginScreen.routeName: (context) => LoginScreen(),
         SplashScreen.routeName: (context) => SplashScreen(),
         ForgetPassScreen.routeName: (context) => ForgetPassScreen(),
-        HomeScreen.routeName: (context) => HomeScreen(),
+        HomeScreen.routeName: (context) => ChangeNotifierProvider(
+          create: (context) => MapsTabProvider(),
+          builder: (context,_) => HomeScreen(),
+        ),
         CreateEventScreen.routeName: (context) => CreateEventScreen(),
+        EventDetailsScreen.routeName: (context) => EventDetailsScreen(),
       },
       initialRoute: SplashScreen.routeName,
     );

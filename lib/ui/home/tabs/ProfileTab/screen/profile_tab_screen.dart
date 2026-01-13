@@ -38,8 +38,7 @@ class _ProfileTabScreenState extends State<ProfileTabScreen> {
     isAR = context.locale.languageCode == 'ar' ? true : false ;
 
 
-    return  SingleChildScrollView(
-      child: Column(
+    return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -65,45 +64,14 @@ class _ProfileTabScreenState extends State<ProfileTabScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              StringManager.welcomeBack.tr(),
-                              style: Theme.of(context).textTheme.bodySmall!.copyWith(color:Colors.white ),
-                            ),
-                            Text(
                               userProvider.myUser?.name??"",
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
+                            Text(
+                              userProvider.myUser?.email??"",
+                              style: Theme.of(context).textTheme.bodySmall!.copyWith(color:Colors.white ),
+                            ),
                           ],
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          provider.changeTheme(
-                              provider.themeMode == ThemeMode.dark
-                                  ? ThemeMode.light
-                                  : ThemeMode.dark);
-                          provider.themeMode == ThemeMode.dark
-                              ?PrefManager.saveThemeMode(true): PrefManager.saveThemeMode(false);
-                        },
-                        icon: Icon(
-                          provider.themeMode == ThemeMode.dark ? CupertinoIcons.moon:CupertinoIcons.sun_max,
-                          color: Colors.white,),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          isAR != isAR;
-                          context.setLocale(Locale(isAR ? 'en' : 'ar'));
-                        },
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 10),
-                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            isAR ? "Ar" : "En",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
                         ),
                       ),
                     ],
@@ -114,80 +82,81 @@ class _ProfileTabScreenState extends State<ProfileTabScreen> {
             const SizedBox(height: 28,),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(StringManager.language.tr(),style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w500
-                      ),),
-                      CustomSwitch(
-                        item1: AssetsManager.us,
-                        item2: AssetsManager.eg,
-                        selected: selectedLanguage,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedLanguage = value;
-                            if(value == 1)
-                            {
-                              context.setLocale(Locale('ar'));
-                            }else{
-                              context.setLocale(Locale('en'));
-                            }
-
-                          });
-                        },
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 16,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(StringManager.theme.tr(),style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w500
-                      ),),
-                      CustomSwitch(item1: AssetsManager.sun,
-                        item2: AssetsManager.moon,
-                        isColored: true, selected: selectedTheme,
-                        onChanged: (value) {
-                          if(value == 0)
-                          {
-                            provider.changeTheme(ThemeMode.light);
-                            PrefManager.saveThemeMode(false);
-                          }else{
-                            provider.changeTheme(ThemeMode.dark);
-                            PrefManager.saveThemeMode(true);
-                          }
-                          setState(() {
-                            selectedTheme = value;
-
-                          });
-                        },)
-                    ],
-                  ),
-                  const SizedBox(height: 28,),
-                  Container(
-                    width: double.infinity,
-                    height: 80,
-                    margin: const EdgeInsets.symmetric(horizontal: 16,),
-                    child: CustomButton(
-                        color: ColorManager.red,
-                        title: "Logout",
-                        onTap: (){
-                          GoogleSignIn.instance.signOut();
-                          FirebaseAuth.instance.signOut();
-                          Navigator.pushNamedAndRemoveUntil(context, LoginScreen.routeName, (route) => false);
-                        }
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(StringManager.language.tr(),style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w500
+                        ),),
+                        CustomSwitch(
+                          item1: AssetsManager.us,
+                          item2: AssetsManager.eg,
+                          selected: selectedLanguage,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedLanguage = value;
+                              if(value == 1)
+                              {
+                                context.setLocale(Locale('ar'));
+                              }else{
+                                context.setLocale(Locale('en'));
+                              }
+                
+                            });
+                          },
+                        )
+                      ],
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 16,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(StringManager.theme.tr(),style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w500
+                        ),),
+                        CustomSwitch(item1: AssetsManager.sun,
+                          item2: AssetsManager.moon,
+                          isColored: true, selected: selectedTheme,
+                          onChanged: (value) {
+                            if(value == 0)
+                            {
+                              provider.changeTheme(ThemeMode.light);
+                              PrefManager.saveThemeMode(false);
+                            }else{
+                              provider.changeTheme(ThemeMode.dark);
+                              PrefManager.saveThemeMode(true);
+                            }
+                            setState(() {
+                              selectedTheme = value;
+                
+                            });
+                          },)
+                      ],
+                    ),
+                    const SizedBox(height: 100,),
+                    Container(
+                      width: double.infinity,
+                      height: 70,
+                      margin: const EdgeInsets.symmetric(horizontal: 16,),
+                      child: CustomButton(
+                          color: ColorManager.red,
+                          title: "Logout",
+                          onTap: (){
+                            GoogleSignIn.instance.signOut();
+                            FirebaseAuth.instance.signOut();
+                            Navigator.pushNamedAndRemoveUntil(context, LoginScreen.routeName, (route) => false);
+                          }
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
 
           ],
-        ),
-    );
+        );
   }
 }
