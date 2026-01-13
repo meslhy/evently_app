@@ -14,7 +14,7 @@ import '../../event_details/screen/event_details_screen.dart';
 
 class EventItem extends StatelessWidget {
 
-  EventModel eventModel;
+  EventModel? eventModel;
 
    EventItem({
      super.key,
@@ -24,7 +24,7 @@ class EventItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeProvider provider = Provider.of<ThemeProvider>(context);
-    String type = eventModel.type!;
+    String type = eventModel?.type??"";
 
     return InkWell(
       onTap: (){
@@ -75,7 +75,7 @@ class EventItem extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      DateFormat.d(context.locale.languageCode == 'ar' ? 'ar' : 'en').format(eventModel.date!.toDate()),
+                      DateFormat.d(context.locale.languageCode == 'ar' ? 'ar' : 'en').format(eventModel?.date?.toDate()??DateTime.now()),
                       style: TextStyle(
                         color: ColorManager.blue,
                         fontSize: 18
@@ -84,7 +84,7 @@ class EventItem extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                        DateFormat.MMM(context.locale.languageCode == 'ar' ? 'ar' : 'en').format(eventModel.date!.toDate()),
+                        DateFormat.MMM(context.locale.languageCode == 'ar' ? 'ar' : 'en').format(eventModel?.date?.toDate()??DateTime.now()),
                       style: TextStyle(
                         color: ColorManager.blue,
                         fontSize: 14
@@ -109,7 +109,7 @@ class EventItem extends StatelessWidget {
                   Expanded(
                     flex: 80,
                     child: Text(
-                      eventModel.description??"",
+                      eventModel?.description??"",
                       style: TextStyle(
                         color: provider.themeMode == ThemeMode.dark ? ColorManager.white : ColorManager.black,
                         fontSize: 14,

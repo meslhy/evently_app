@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
@@ -139,12 +140,31 @@ class CreateEventProvider extends ChangeNotifier{
         Navigator.pop(context);
         dilogUtils().showToast(
             "Event Created Successfully");
+        Navigator.pop(context);
       }catch(e){
         Navigator.pop(context);
         dilogUtils().showToast(e.toString());
 
       }
     }
+  }
+
+
+  String? country;
+  String? city;
+  Future<void> convertLatLog(LatLng latLng)async {
+
+    List<geocoding.Placemark> placemarks = await geocoding.placemarkFromCoordinates(latLng.latitude, latLng.longitude);
+    if (placemarks.isNotEmpty) {
+      country = placemarks[0].country??"Can't find Country";
+      city = placemarks[0].locality?? "Can't find City";
+      notifyListeners();
+    } else {
+      country = "Can't find Country";
+      city = "Can't find City";
+    }
+
+    notifyListeners();
   }
 
 

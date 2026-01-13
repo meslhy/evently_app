@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
@@ -84,5 +85,41 @@ class MapsTabProvider extends ChangeNotifier {
       notifyListeners();
     });
 
+  }
+
+  void changCameraPosition(LatLng latLng , String title){
+    cameraPosition = CameraPosition(
+      target: latLng,
+      zoom: 14.4746,
+    );
+    markers.add(Marker(
+      markerId: MarkerId(UniqueKey().toString()),
+      position: latLng,
+      infoWindow: InfoWindow(
+        title:title,
+      ),
+    ));
+
+
+    googleMapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    notifyListeners();
+
+  }
+
+  String? country;
+  String? city;
+  Future<void> convertLatLog(LatLng latLng)async {
+
+    List<geocoding.Placemark> placemarks = await geocoding.placemarkFromCoordinates(latLng.latitude, latLng.longitude);
+    if (placemarks.isNotEmpty) {
+      country = placemarks[0].country??"Can't find Country";
+      city = placemarks[0].locality?? "Can't find City";
+      notifyListeners();
+    } else {
+      country = "Can't find Country";
+      city = "Can't find City";
+    }
+
+    notifyListeners();
   }
 }

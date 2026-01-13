@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:evently_app1/core/resources/ColorManager.dart';
 import 'package:evently_app1/providers/ThemeProvider.dart';
 import 'package:evently_app1/providers/UserProvider.dart';
+import 'package:evently_app1/ui/home/tabs/MapsTab/provider/maps_tab_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -42,19 +43,22 @@ class _HomeTabScreenState extends State<HomeTabScreen> with SingleTickerProvider
     });
 
   }
+
   @override
   Widget build(BuildContext context) {
 
     isAR = context.locale.languageCode == 'ar' ? true : false ;
     UserProvider provider = Provider.of<UserProvider>(context);
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+    MapsTabProvider mapsTabProvider = Provider.of<MapsTabProvider>(context);
+
     return DefaultTabController(
       length: 4,
       child: SafeArea(
         child: Column(
             children: [
               Container(
-                height: MediaQuery.of(context).size.height * 0.2,
+                height: MediaQuery.of(context).size.height * 0.25,
                 padding:EdgeInsets.symmetric(horizontal: 16),
                 decoration:BoxDecoration(
                   color: themeProvider.themeMode == ThemeMode.dark ? ColorManager.darkBackground : ColorManager.blue,
@@ -82,6 +86,17 @@ class _HomeTabScreenState extends State<HomeTabScreen> with SingleTickerProvider
                                 provider.myUser?.name??"",
                                 style: Theme.of(context).textTheme.titleLarge,
                               ),
+                              const SizedBox(height: 10,),
+                              Row(
+                                  children: [
+                                    Icon(Icons.location_on, color: Colors.white, size: 20,),
+                                    Expanded(
+                                      child: Text("${mapsTabProvider.city},${mapsTabProvider.country??""}",
+                                          style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white)
+                                      ),
+                                    ),
+                                  ],
+                                ),
                             ],
                           ),
                         ),
@@ -97,24 +112,6 @@ class _HomeTabScreenState extends State<HomeTabScreen> with SingleTickerProvider
                               icon: Icon(
                             themeProvider.themeMode == ThemeMode.dark ? CupertinoIcons.moon:CupertinoIcons.sun_max,
                             color: Colors.white,),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            isAR != isAR;
-                            context.setLocale(Locale(isAR ? 'en' : 'ar'));
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                               isAR ? "Ar" : "En",
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ),
                         ),
                       ],
                     ),
