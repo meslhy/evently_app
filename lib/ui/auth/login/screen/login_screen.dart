@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:evently_app1/core/DilogUtils.dart';
+import 'package:evently_app1/core/resources/ColorManager.dart';
 import 'package:evently_app1/core/reusable_componant/CustomButton.dart';
 import 'package:evently_app1/core/reusable_componant/CustomTextButton.dart';
 import 'package:evently_app1/core/reusable_componant/CustomTextFF.dart';
@@ -9,13 +10,16 @@ import 'package:evently_app1/ui/auth/forgetPass/screen/forget_pass_screen.dart';
 import 'package:evently_app1/ui/home/screen/home_screen.dart';
 import 'package:evently_app1/ui/splash/screen/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/FirestoreHandler.dart';
 import '../../../../core/resources/AssetsManager.dart';
 import '../../../../core/resources/StringManager.dart';
 import '../../../../core/reusable_componant/CustomSwitch.dart';
+import '../../../../providers/ThemeProvider.dart';
 import '../../register/screen/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -40,6 +44,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider provider = Provider.of<ThemeProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     selectedLanguage = context.locale.languageCode == 'en' ? 0 : 1;
     return Scaffold(
       appBar: AppBar(
@@ -153,7 +159,45 @@ class _LoginScreenState extends State<LoginScreen> {
         
                     });
                   },
+                ),
+                const SizedBox(height: 16,),
+                ElevatedButton(
+                style:ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16
+                  ),
+                  backgroundColor:provider.themeMode == ThemeMode.dark ? ColorManager.darkBackground : ColorManager.lightBackground,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)
+                  ),
+
+                ) ,
+                onPressed: ()async{
+                  UserModel? user = await FirestoreHandler().signInWithGoogle();
+                  FirestoreHandler().addUser(UserModel(
+                      id: user?.id,
+                      name: user?.name,
+                      email: user?.email
+                  ));
+                  userProvider.saveUser(user);
+                  Navigator.pushNamedAndRemoveUntil(context, HomeScreen.routeName, (route) => false);
+                },
+                child:Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/images/googleIcon.svg",
+                      width: 26,
+                      height: 26,
+                    ),
+                    const SizedBox(width: 16,),
+                    Text(
+                      "Login With Google",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
                 )
+            )
         
         
         

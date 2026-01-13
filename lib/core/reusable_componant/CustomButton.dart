@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../resources/ColorManager.dart';
+
 class CustomButton extends StatelessWidget {
   String title;
   void Function() onTap;
+  Color? color;
+
   CustomButton({
     super.key,
     required this.title,
-    required this.onTap
+    required this.onTap,
+    this.color
   });
 
   @override
@@ -16,7 +21,7 @@ class CustomButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
           vertical: 16
         ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor:color ?? Theme.of(context).colorScheme.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16)
         ),
@@ -27,5 +32,6 @@ class CustomButton extends StatelessWidget {
           title,
           style: Theme.of(context).textTheme.labelMedium,
         ) );
+
   }
 }

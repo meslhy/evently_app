@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evently_app1/model/user/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 
 import '../model/event/event_model.dart';
 
@@ -84,4 +87,40 @@ class FirestoreHandler {
   }
 
 
+  final googleSignIn = GoogleSignIn.instance;
+
+  Future<UserModel?> signInWithGoogle() async {
+    // Initialize
+    await googleSignIn.initialize();
+
+    // Authenticate
+    final user = await googleSignIn.authenticate(
+      scopeHint: ['email'],
+    );
+
+    if (user == null) return null;
+
+    final googleAuth = await user.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      idToken: googleAuth.idToken,
+      accessToken: "840340548876-3pmdij5e5ms8ie90fbr12edto8e1qn5r.apps.googleusercontent.com",
+    );
+
+    // تسجيل الدخول في Firebase
+    final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+
+    // تحويل Firebase User → UserModel
+    return userCredential.user != null
+        ? UserModel(
+      id: FirebaseAuth.instance.currentUser!.uid,
+      name: userCredential.user!.displayName,
+      email: userCredential.user!.email,
+
+    )
+        : null;
   }
+
+
+
+}
