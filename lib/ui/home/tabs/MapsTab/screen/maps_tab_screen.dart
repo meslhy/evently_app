@@ -3,6 +3,8 @@ import 'package:evently_app1/ui/home/tabs/MapsTab/provider/maps_tab_provider.dar
 import 'package:evently_app1/ui/home/tabs/MapsTab/widgets/EventCardInMap.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+import 'package:permission_handler/permission_handler.dart' as handler;
 import 'package:provider/provider.dart';
 
 import '../../../../../core/FirestoreHandler.dart';
@@ -68,9 +70,24 @@ class MapsTabScreen extends StatelessWidget {
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(16.0),
         child: FloatingActionButton(
-          onPressed: () {
-            provider.getLocation();
-            provider.convertLatLog(provider.cameraPosition.target);
+          onPressed: () async{
+            final granted = await provider.getLocationPermission();
+
+            if (granted) {
+              await provider.getLocation();
+              await provider.convertLatLog(provider.cameraPosition.target);
+            } else {
+              // نسأله مرة تانية
+              final retryStatus = await provider.location.requestPermission();
+
+              if (retryStatus == PermissionStatus.granted) {
+                await provider.getLocation();
+                await provider.convertLatLog(provider.cameraPosition.target);
+              } else if (retryStatus == PermissionStatus.deniedForever) {
+                // لو رفض Forever → افتح الإعدادات
+                await handler.openAppSettings();
+              }
+            }
           },
           backgroundColor: Theme.of(context).primaryColor,
 

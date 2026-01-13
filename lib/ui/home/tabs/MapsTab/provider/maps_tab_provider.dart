@@ -5,7 +5,7 @@ import 'package:location/location.dart';
 
 class MapsTabProvider extends ChangeNotifier {
   Location location = Location();
-
+  late PermissionStatus permissionStatus;
   late GoogleMapController googleMapController;
   CameraPosition cameraPosition = const CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
@@ -19,15 +19,18 @@ class MapsTabProvider extends ChangeNotifier {
   // }
 
 
-  Future<bool> _getLocationPermission()async{
-    PermissionStatus permissionStatus;
-
+  Future<bool> getLocationPermission()async{
     permissionStatus = await location.hasPermission();
 
-    if(permissionStatus == PermissionStatus.denied){
-
+    if (permissionStatus == PermissionStatus.denied) {
       permissionStatus = await location.requestPermission();
     }
+
+    if (permissionStatus == PermissionStatus.deniedForever) {
+      // افتح الإعدادات
+      return false;
+    }
+
     return permissionStatus == PermissionStatus.granted;
 
   }
@@ -41,22 +44,18 @@ class MapsTabProvider extends ChangeNotifier {
   }
 
   Future<void> getLocation()async {
-    bool permissionGranted = await _getLocationPermission();
-    if(!permissionGranted){
-      notifyListeners();
+    bool permissionGranted = await getLocationPermission();
+    if (!permissionGranted) {
+      return;
     }
 
     bool serviceEnabled = await _checkLocationService();
-    if(!serviceEnabled){
-      notifyListeners();
+    if (!serviceEnabled) {
+      return;
     }
-    notifyListeners();
 
     LocationData locationData = await location.getLocation();
-
     changeLocationOnMap(locationData);
-
-    notifyListeners();
 
   }
 
